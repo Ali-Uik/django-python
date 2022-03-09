@@ -27,6 +27,7 @@ class Article(models.Model):
     photo = models.ImageField(upload_to='photos/', blank=True, null=True, verbose_name='Изображение')
     is_published = models.BooleanField(default=True, verbose_name='Опубликовано')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+    # bu yerda biz bog'liqlikni belgilaymiz
 
     # models.CASCADE - категория учирилганда шу категория билан боглик булган хамма статьяларни учиради
 
