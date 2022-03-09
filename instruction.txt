@@ -1,0 +1,8 @@
+Install venv
+sudo apt install -y python3-venv
+Activation
+source env/bin/activate
+python manage.py runserver
+python manage.py makemigrations
+python manage.py createsuperuser
+
