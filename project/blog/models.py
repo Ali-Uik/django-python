@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 # Create your models here.
@@ -7,6 +8,9 @@ class Category(models.Model):
     title = models.CharField(max_length=150, verbose_name='Название')
 
     # Char - simbollar, Field - qator. CharField - Simvollar qatori, verbose_name - adminkada kurinishi uchun
+
+    def get_absolute_url(self):
+        return reverse('category_list', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.title
@@ -28,8 +32,10 @@ class Article(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Опубликовано')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     # bu yerda biz bog'liqlikni belgilaymiz
-
     # models.CASCADE - категория учирилганда шу категория билан боглик булган хамма статьяларни учиради
+
+    def get_absolute_url(self):
+        return reverse('article_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.title
