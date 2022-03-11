@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Article, Category
+from .forms import ArticleForm
 
 
 # Create your views here.
@@ -32,3 +33,21 @@ def article_detail(request, pk):
         'article': article
     }
     return render(request, 'blog/details.html', context)
+
+
+def add_article(request):
+    if request.method == 'POST':
+        form = ArticleForm(data=request.POST)
+        if form.is_valid():
+            article = Article.objects.create(**form.cleaned_data)
+            article.save()
+            return redirect('article_detail', article.pk)
+    else:
+        form = ArticleForm()
+
+    context = {
+        'title': 'Добавить статью',
+        'form': form
+    }
+
+    return render(request, 'blog/article_form.html', context)
