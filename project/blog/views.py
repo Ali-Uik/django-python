@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Article, Category
 from .forms import ArticleForm
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 
 # Create your views here.
@@ -37,7 +38,7 @@ def article_detail(request, pk):
 
 def add_article(request):
     if request.method == 'POST':
-        form = ArticleForm(data=request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             article = Article.objects.create(**form.cleaned_data)
             article.save()
@@ -51,3 +52,15 @@ def add_article(request):
     }
 
     return render(request, 'blog/article_form.html', context)
+
+
+class ArticleList(ListView):  # article_list.html
+    model = Article  # Берем все объекты статьи
+    context_object_name = 'articles'  # По дефолту все объекты идут под именем objects
+    template_name = 'blog/all_articles.html'
+    extra_context = {
+        'title': 'Главная страница из классов'  # Это статичные данные
+    }
+
+    def get_queryset(self):
+        return Article.objects.filter(is_published=True)
